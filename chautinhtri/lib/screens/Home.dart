@@ -46,7 +46,6 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
     super.initState();
     // Ads.hideBanner2Ad();
     // Ads.hideBanner3Ad();
-    Ads.hideInterstitialAd();
 
     Ads.showBannerAd();
     // Timer.periodic(new Duration(seconds: 5), (timer) {

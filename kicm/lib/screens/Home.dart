@@ -47,7 +47,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
     // Ads.hideBanner2Ad();
     // Ads.hideBanner3Ad();
 
-    // Ads.showBannerAd();
+    Ads.showBannerAd();
 
 
     tabController = TabController(

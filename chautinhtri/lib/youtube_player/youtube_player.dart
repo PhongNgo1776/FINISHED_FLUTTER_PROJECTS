@@ -645,6 +645,7 @@ class YoutubePlayerController extends ValueNotifier<YoutubePlayerValue> {
 
   /// Forces to exit fullScreen.
   void exitFullScreen() {
+    Ads.showInterstitialAd();
     pause();
     value = value.copyWith(isFullScreen: false);
     SystemChrome.setPreferredOrientations([

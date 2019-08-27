@@ -129,7 +129,8 @@ class _BottomBarState extends State<BottomBar> {
       triggeredFullScreenByButton = false;
       return SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     } else {
-      // Ads.showBanner1Ad();
+      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+      Ads.showBanner1Ad();
       Navigator.pop(context, true);
     }
   }

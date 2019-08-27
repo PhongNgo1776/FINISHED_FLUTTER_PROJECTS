@@ -36,7 +36,7 @@ class ListFilms extends StatefulWidget {
 class ListFilmsState extends State<ListFilms> {
 
   Future<bool> _onWillPop() {
-    // Ads.showBannerAd();
+    Ads.showBannerAd();
     Navigator.pop(context, true);
   }
 

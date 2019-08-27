@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:swkicm/main.dart';
 import 'package:swkicm/models/Ads.dart';
+import 'package:swkicm/models/FilmInfo.dart';
 import 'package:swkicm/models/TypeVideo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -36,7 +37,8 @@ class ListFilms extends StatefulWidget {
 class ListFilmsState extends State<ListFilms> {
 
   Future<bool> _onWillPop() {
-    // Ads.showBannerAd();
+    Ads.hideBanner1Ad();
+    Ads.showBannerAd();
     Navigator.pop(context, true);
   }
 
@@ -52,7 +54,6 @@ class ListFilmsState extends State<ListFilms> {
     super.dispose();
     Ads.hideBannerAd();
     Ads.hideBanner1Ad();
-    Ads.hideBanner2Ad();
   }
 
   @override

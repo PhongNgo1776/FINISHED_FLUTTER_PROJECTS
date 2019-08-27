@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/services.dart';
 import 'package:swcttfilm/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -29,9 +30,10 @@ class Detail extends StatefulWidget {
 class DetailState extends State<Detail> {
   var isFirstTime = true;
 
-  // Future<bool> _onWillPop() {
-  //   // return SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  // }
+  Future<bool> _onWillPop() {
+    Ads.showBannerAd();
+    return SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  }
 
   @override
   void initState() {
@@ -40,7 +42,6 @@ class DetailState extends State<Detail> {
     Ads.hideBanner1Ad();
     Ads.showBanner2Ad();
 
-    Ads.showRewaredVideoAd();
     Timer.periodic(new Duration(seconds: 2400), (timer) {
       Ads.showRewaredVideoAd();
     });
@@ -56,7 +57,9 @@ class DetailState extends State<Detail> {
       //   title: Text('Chi tiết'),
       //   backgroundColor: Color.fromRGBO(50, 50, 50, 1),
       // ),
-      body: new Stack(
+      body: new WillPopScope(
+      onWillPop: _onWillPop,
+      child: new Stack(
         children: <Widget>[
           new Container(
             decoration: new BoxDecoration(
@@ -94,7 +97,7 @@ class DetailState extends State<Detail> {
           ],)
         ),
       ])
-    );
+    ));
   }
 
   @override

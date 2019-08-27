@@ -37,13 +37,15 @@ class DetailState extends State<Detail> {
   @override
   void initState() {
     super.initState();
-    // Ads.hideBannerAd();
-    // Ads.hideBanner1Ad();
-    // Ads.showBanner2Ad();
+    Ads.hideBannerAd();
+    Ads.hideBanner1Ad();
+    Ads.showBanner2Ad();
 
-    var rng = new Random();
-    if(rng.nextInt(10) < 3) Ads.showRewaredVideoAd();
-
+    new Timer(const Duration(seconds: 18), () {
+      setState(() {
+        Ads.hideBanner2Ad();
+      });
+    });
   }
 
   @override
@@ -87,7 +89,7 @@ class DetailState extends State<Detail> {
                 child: RaisedButton(
                   color: Colors.yellow,
                   onPressed: () {
-                    // Ads.showBanner1Ad();
+                    Ads.showBanner1Ad();
                     Navigator.pop(context, true);
                   },
                   child: Text('Danh sách video', style: TextStyle(color: Colors.red),),

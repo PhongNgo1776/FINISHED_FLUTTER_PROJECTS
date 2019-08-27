@@ -5,6 +5,7 @@ import 'package:swkicm/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:swkicm/models/Ads.dart';
+import 'package:swkicm/models/FilmInfo.dart';
 import 'package:swkicm/youtube_player/progress_bar.dart';
 import 'package:swkicm/youtube_player/youtube_player.dart';
 // import 'package:swkicm/youtube_player/youtube_player_flutter.dart';
@@ -38,11 +39,13 @@ class DetailState extends State<Detail> {
   void initState() {
     super.initState();
     Ads.hideBannerAd();
-    Ads.hideBanner1Ad();
+    Ads.showBanner1Ad();
 
-    var rng = new Random();
-    if(rng.nextInt(10) < 3) Ads.showRewaredVideoAd();
-
+    new Timer(const Duration(seconds: 18), () {
+      setState(() {
+        Ads.hideBanner1Ad();
+      });
+    });
   }
 
   @override
@@ -77,7 +80,7 @@ class DetailState extends State<Detail> {
                 margin: EdgeInsets.only(top: 15),
                 child: Column(
                   children: <Widget>[
-                    Text("Nếu không xem được vui lòng quay lại danh sách video và chọn lại video. Đội ngũ phát triển ứng dụng sẽ khắc phục sớm lỗi này. Xin cảm ơn", style: TextStyle(color: Colors.red),),
+                    Text("Không xem được => Chọn danh sách video => Chọn lại video. \nĐội ngũ phát triển ứng dụng sẽ khắc phục sớm lỗi này. Xin cảm ơn", style: TextStyle(color: Colors.red),),
                   ],
                 ),
               ),

@@ -126,10 +126,13 @@ class _BottomBarState extends State<BottomBar> {
   Future<bool> _onWillPop() {
     if (controller.value.isFullScreen) {
       controller.exitFullScreen();
+      Ads.showRewaredVideoAd();
+      Ads.showBanner1Ad();
       triggeredFullScreenByButton = false;
       return SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     } else {
-      // Ads.showBanner1Ad();
+      Ads.showBanner1Ad();
+      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
       Navigator.pop(context, true);
     }
   }

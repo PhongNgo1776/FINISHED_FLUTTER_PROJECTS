@@ -44,7 +44,6 @@ class ListFilmsState extends State<ListFilms> {
     //   Ads.showBanner1Ad();
     // });
 
-    Ads.showInterstitialAd();
   }
 
   @override
