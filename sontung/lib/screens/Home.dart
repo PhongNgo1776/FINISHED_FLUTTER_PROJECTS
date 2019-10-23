@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swmtp/models/Ads.dart';
@@ -21,6 +22,10 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
   var isFirstTime = true;
 
   Future<bool> _onWillPop() {
+    InterstitialAd(
+      adUnitId: INTERSTITIAL_ID,
+      targetingInfo: Ads.targetingInfo,
+    )..load()..show();
     return showDialog(
       context: context,
       builder: (context) => new AlertDialog(
@@ -46,7 +51,6 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    // Ads.hideInterstitialAd();
 
     Ads.showBannerAd();
 
@@ -63,7 +67,6 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
   @override
   void dispose() {
     super.dispose();
-    Ads.hideBannerAd();
   }
 
   @override

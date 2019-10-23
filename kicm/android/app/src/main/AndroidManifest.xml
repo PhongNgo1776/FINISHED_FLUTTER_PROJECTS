@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="K-ICM - Album Nhạc Mới Nhất"
+        android:label="KICM vs JACK- Album Nhạc Mới Nhất"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-6420987903580707~3357693913"/>
         <activity

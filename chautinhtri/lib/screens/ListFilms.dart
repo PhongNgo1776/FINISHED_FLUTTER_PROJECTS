@@ -9,6 +9,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 
+const THUMBNAIL_URL_ROOT = "https://i3.ytimg.com/vi/";
+const THUMNAIL_SUFFIX = "/mqdefault.jpg";
+
 Future<List<TypeVideo>> fetchData() async {
   final response = await http.get('https://beer-199402.firebaseapp.com/api/v1/chautinhtri');
   
@@ -40,6 +43,8 @@ class ListFilmsState extends State<ListFilms> {
   @override
   void initState() {
     super.initState();
+
+    Ads.showInterstitialAd();
     // Timer.periodic(new Duration(seconds: 3), (timer) {
     //   Ads.showBanner1Ad();
     // });
@@ -49,9 +54,6 @@ class ListFilmsState extends State<ListFilms> {
   @override
   void dispose() {
     super.dispose();
-    Ads.hideBannerAd();
-    Ads.hideBanner1Ad();
-    Ads.hideBanner2Ad();
   }
 
   @override
@@ -95,14 +97,20 @@ class ListFilmsState extends State<ListFilms> {
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: <Widget>[
                                             Container(
-                                              padding: EdgeInsets.only(left: 10),
+                                              padding: EdgeInsets.only(left: 10, top: 3, bottom: 3),
                                               alignment: Alignment.center,
                                               // color: Colors.yellow,
                                               decoration: myBoxDecoration(),
                                               child: Row(
                                                 children: <Widget>[
-                                                  Image.asset('images/logo.png', height: 40, width: 40),
-                                                  Text("    " + snapshot.data[0].filmList[index].title, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red)),
+                                                  Image.network(THUMBNAIL_URL_ROOT + snapshot.data[0].filmList[index].videoKey + THUMNAIL_SUFFIX, height: 65, width: 120),
+                                                  Expanded(
+                                                    child:
+                                                      Container(
+                                                        margin: EdgeInsets.only(left: 5),
+                                                        child: Text(snapshot.data[0].filmList[index].title, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.yellow)),
+                                                      )
+                                                  )
                                                 ],
                                               )
                                             ),
@@ -130,9 +138,9 @@ class ListFilmsState extends State<ListFilms> {
 
 BoxDecoration myBoxDecoration() {
   return BoxDecoration(
-    color: Colors.yellow[300],
+    color: Color.fromRGBO(50, 50, 50, 1),
     border: Border.all(
-      width: 3.0
+      width: 3.0,
     ),
     borderRadius: BorderRadius.all(
         Radius.circular(5.0) //         <--- border radius here

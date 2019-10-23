@@ -16,6 +16,7 @@ class Ads {
 
   static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
     testDevices: testDevice != null ? <String>[testDevice] : null,
+    keywords: ['music', 'song', 'beauty', 'dress', 'fashion', 'model', 'movie', 'girl', 'sing', 'skin', 'makeup', 'hair', 'teenager', 'teen', 'shopping', 'wed', 'animal', 'phone', 'star', 'cook', 'cute', 'show', 'design']
   );
 
   static BannerAd _createBannerAd() {

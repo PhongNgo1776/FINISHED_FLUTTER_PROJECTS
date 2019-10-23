@@ -1,10 +1,10 @@
 arguments=
 auto.sync=false
 build.scans.enabled=false
-connection.gradle.distribution=GRADLE_DISTRIBUTION(WRAPPER)
+connection.gradle.distribution=GRADLE_DISTRIBUTION(VERSION(5.4))
 connection.project.dir=
 eclipse.preferences.version=1
-gradle.user.home=C\:/Program Files/gradle-2.8
+gradle.user.home=
 java.home=
 jvm.arguments=
 offline.mode=false

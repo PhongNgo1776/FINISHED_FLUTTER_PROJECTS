@@ -1,10 +1,14 @@
 
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:swkicm/enums/PlayerStateEnum.dart';
 import 'package:swkicm/models/Ads.dart';
 import 'package:swkicm/youtube_player/duration_formatter.dart';
-import 'package:swkicm/youtube_player/progress_bar.dart';
-import 'package:swkicm/youtube_player/youtube_player.dart';
+import 'package:swkicm/youtube_player/youtube_player_controller.dart';
+import 'package:swkicm/youtube_player/youtube_player_flutter.dart';
+
+bool triggeredFullScreenByButton = false;
 
 class PlayPauseButton extends StatefulWidget {
   final YoutubePlayerController controller;
@@ -69,11 +73,11 @@ class _PlayPauseButtonState extends State<PlayPauseButton>
       controller = widget.controller;
       _attachListenerToController();
     }
-    return controller.value.playerState == PlayerState.BUFFERING
+    return controller.value.playerState == PlayerStateEnum.BUFFERING
         ? widget.bufferIndicator
         : Visibility(
             visible: widget.showControls.value ||
-                controller.value.playerState == PlayerState.CUED ||
+                controller.value.playerState == PlayerStateEnum.CUED ||
                 !controller.value.isPlaying,
             child: Material(
               color: Colors.transparent,
@@ -126,12 +130,9 @@ class _BottomBarState extends State<BottomBar> {
   Future<bool> _onWillPop() {
     if (controller.value.isFullScreen) {
       controller.exitFullScreen();
-      Ads.showRewaredVideoAd();
-      Ads.showBanner1Ad();
       triggeredFullScreenByButton = false;
       return SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     } else {
-      Ads.showBanner1Ad();
       SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
       Navigator.pop(context, true);
     }

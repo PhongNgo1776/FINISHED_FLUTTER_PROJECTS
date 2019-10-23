@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:swkicm/models/Ads.dart';
+import 'package:swkicm/models/ListIndex.dart';
 import 'package:swkicm/screens/DrawerMenu.dart';
 
 void main() => runApp(MaterialApp(
@@ -21,6 +23,10 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
   var isFirstTime = true;
 
   Future<bool> _onWillPop() {
+    InterstitialAd(
+      adUnitId: INTERSTITIAL_ID,
+      targetingInfo: Ads.targetingInfo,
+    )..load()..show();
     return showDialog(
       context: context,
       builder: (context) => new AlertDialog(
@@ -62,7 +68,6 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
   @override
   void dispose() {
     super.dispose();
-    Ads.hideBannerAd();
   }
 
   @override
@@ -74,7 +79,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
       onWillPop: _onWillPop,
       child: Scaffold(
       appBar: AppBar(
-        title: Text('K-ICM - Album Mới Nhất', style: TextStyle(color: Color.fromRGBO(210, 255, 77, 1)),),
+        title: Text('KICM vs JACK - Album Mới Nhất', style: TextStyle(color: Color.fromRGBO(210, 255, 77, 1)),),
         iconTheme: new IconThemeData(color: Color.fromRGBO(210, 255, 77, 1)),
         backgroundColor: Color.fromRGBO(50, 50, 50, 1),
       ),
@@ -87,9 +92,9 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
               SliverList(
                 delegate: SliverChildListDelegate(
                     [Container(
-                          height: 200, 
+                          height: 250, 
                           color: Colors.black,
-                          padding: EdgeInsets.only(left: 10, right: 10),
+                          padding: EdgeInsets.only(left: 10, right: 10, top: 40),
                           child: Column(
                             children: <Widget>[
                               Row(children: <Widget>[
@@ -98,7 +103,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                   child: Padding(
                                     padding: EdgeInsets.all(8.0),
                                     child: Text.rich(TextSpan(
-                                      text: 'K-ICM: ', 
+                                      text: 'KICM', 
                                       style: TextStyle(color: Colors.yellow, fontWeight: FontWeight.bold),// default text style
                                       children: <TextSpan>[
                                         TextSpan(
@@ -109,15 +114,41 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                     )
                                   )
                                 ),
-                                )
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text.rich(TextSpan(
+                                      text: 'Jack', 
+                                      style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),// default text style
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                          text: ' (1997), quê ở Bến Tre. Jack từng là giáo viên dạy âm nhạc của một trường Tiểu học.', 
+                                          style: TextStyle(fontStyle: FontStyle.italic, color: Colors.red, fontWeight: FontWeight.normal)
+                                        ),
+                                      ]
+                                    )
+                                  )
+                                ))
                               ]),
-                              RaisedButton(
-                                color: Colors.yellow,
-                                onPressed: () {
-                                  Navigator.pushNamed(context, '/listfilms');
-                                },
-                                child: Text('Xem Nhạc', style: TextStyle(color: Colors.red),),
-                              )
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: <Widget>[
+                                  RaisedButton(
+                                    color: Colors.yellow,
+                                    onPressed: () {
+                                      Navigator.pushNamed(context, '/listfilms', arguments: ListIndex(0));
+                                    },
+                                    child: Text('Xem MV', style: TextStyle(color: Colors.red),),
+                                  ),
+                                  RaisedButton(
+                                    color: Colors.green,
+                                    onPressed: () {
+                                      Navigator.pushNamed(context, '/listfilms', arguments: ListIndex(1));
+                                    },
+                                    child: Text('Xem Live', style: TextStyle(color: Colors.yellow),),
+                                  )
+                              ],)
                             ]
                         )
                       )]),
@@ -200,10 +231,11 @@ class DemoTabState extends State<DemoTab> with AutomaticKeepAliveClientMixin<Dem
           padding: EdgeInsets.only(left: 10, right: 10),
           color: Colors.black,
           alignment: Alignment.topCenter,
-          child: Text(
-            '\nK-ICM đã trở thành hiện tượng mạng khi biến đàn organ thành DJ, đàn tranh, đàn bầu và rất nhiều các loại nhạc cụ khác. Từ cậu bé với ước mơ nâng tầm cây đàn organ của mình, Khánh đã dần trở thành người biểu diễn tài năng trên những sân khấu lớn với hàng ngàn người tham dự. Đồng thời với vai trò là nhà sản xuất âm nhạc, Khánh cũng đã ra đời những bản hòa âm phối khí gây hot. K-ICM hiện làm việc cho công ty Incuommos. Album đã phát hành: Buồn Của Anh (Single) (2017)',
-          style: TextStyle(color: Colors.white),),
-
+          child: 
+          Column(children: <Widget>[
+            Text('\nKICM đã trở thành hiện tượng mạng khi biến đàn organ thành DJ, đàn tranh, đàn bầu và rất nhiều các loại nhạc cụ khác. Từ cậu bé với ước mơ nâng tầm cây đàn organ của mình, Khánh đã dần trở thành người biểu diễn tài năng trên những sân khấu lớn với hàng ngàn người tham dự. Đồng thời với vai trò là nhà sản xuất âm nhạc, Khánh cũng đã ra đời những bản hòa âm phối khí gây hot. KICM hiện làm việc cho công ty Incuommos. Album đã phát hành: Buồn Của Anh (Single) (2017).',style: TextStyle(color: Colors.white),),
+            Text('\nJack đã từ bỏ con đường sư phạm và chính thức bước chân vào nghệ thuật chuyên nghiệp bằng việc gia nhập và hoạt động trong nhóm hip hop G5R. Nỗ lực là vậy nhưng con đường ca hát của chàng ca sĩ Miền Tây thời gian đầu không mấy thuận lợi, G5R chưa thực sự gây được tiếng vang nhiều, nhóm vốn chỉ được biết đến bởi bộ phận khán giả là fan “ruột” của thể loại Rap và dòng nhạc Underground.',style: TextStyle(color: Colors.white),),
+          ],)
         );
       },
       itemCount: 1,

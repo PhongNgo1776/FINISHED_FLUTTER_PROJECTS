@@ -26,12 +26,6 @@ class MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
     ..addListener(() {
         final bool isPlaying = _videoPlayerController.value.isPlaying;
         if(isPlaying){
-          if(isFirstTime){
-            Ads.hideInterstitialAd();
-          } else {
-            Ads.showInterstitialAd();
-          }
-
           isFirstTime = false;
           // new Timer(const Duration(milliseconds: 5000), () {
           //   setState(() {

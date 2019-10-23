@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:swkicm/main.dart';
 import 'package:swkicm/models/Ads.dart';
-import 'package:swkicm/models/FilmInfo.dart';
+import 'package:swkicm/models/DetailAgrs.dart';
+import 'package:swkicm/models/ListIndex.dart';
 import 'package:swkicm/models/TypeVideo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,29 +35,31 @@ class ListFilms extends StatefulWidget {
 }
 
 class ListFilmsState extends State<ListFilms> {
-
+  String message = 'Đang Tải...';
   Future<bool> _onWillPop() {
-    Ads.hideBanner1Ad();
-    Ads.showBannerAd();
     Navigator.pop(context, true);
   }
 
   @override
   void initState() {
     super.initState();
-
     Ads.showInterstitialAd();
+
+    Timer(Duration(seconds: 3), () {
+      setState(() {
+       message = "Vui lòng kết nối internet. Thanks 😘😘😘";
+      });
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
-    Ads.hideBannerAd();
-    Ads.hideBanner1Ad();
   }
 
   @override
   Widget build(BuildContext context) {
+    final ListIndex args = ModalRoute.of(context).settings.arguments;
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
       statusBarColor: Colors.black12, //or set color with: Color(0xFF0000FF)
     ));
@@ -65,7 +67,7 @@ class ListFilmsState extends State<ListFilms> {
       onWillPop: _onWillPop,
       child:  Scaffold(
       appBar: AppBar(
-        title: Text('K-ICM - Album Mới Nhất', style: TextStyle(color: Color.fromRGBO(210, 255, 77, 1)),),
+        title: Text(args.listIndex == 0 ? 'MV KICM - JACK' : 'LIVE KICM - JACK', style: TextStyle(color: Color.fromRGBO(210, 255, 77, 1)),),
         iconTheme: new IconThemeData(color: Color.fromRGBO(210, 255, 77, 1)),
         backgroundColor: Color.fromRGBO(50, 50, 50, 1),
       ),
@@ -88,11 +90,11 @@ class ListFilmsState extends State<ListFilms> {
                             child:  ListView.builder(
                                     scrollDirection: Axis.vertical,
                                     shrinkWrap: true,
-                                    padding: EdgeInsets.only(top: 20, left: 10, right: 10),
-                                    itemCount: snapshot.data[0].filmList.length,
+                                    padding: EdgeInsets.only(top: 60, left: 10, right: 10),
+                                    itemCount: snapshot.data[args.listIndex].filmList.length,
                                     itemBuilder: (context, index) {
                                       return GestureDetector(
-                                        onTap: () { Navigator.pushNamed(context, '/detail', arguments: FilmInfo(snapshot.data[0].filmList[index].title, snapshot.data[0].filmList[index].content, snapshot.data[0].filmList[index].videoKey)); },
+                                        onTap: () { Navigator.pushNamed(context, '/detail', arguments: DetailAgrs(snapshot.data[args.listIndex].filmList[index].title, snapshot.data[args.listIndex].filmList[index].videoKey)); },
                                         child: Column(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: <Widget>[
@@ -102,9 +104,16 @@ class ListFilmsState extends State<ListFilms> {
                                               // color: Colors.yellow,
                                               decoration: myBoxDecoration(),
                                               child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
                                                 children: <Widget>[
-                                                  Image.network(THUMBNAIL_URL_ROOT + snapshot.data[0].filmList[index].videoKey + THUMNAIL_SUFFIX, height: 65, width: 120),
-                                                  Text("  " + snapshot.data[0].filmList[index].title, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.yellow)),
+                                                  Image.network(THUMBNAIL_URL_ROOT + snapshot.data[args.listIndex].filmList[index].videoKey + THUMNAIL_SUFFIX, height: 65, width: 120),
+                                                  Expanded(
+                                                    child:
+                                                      Container(
+                                                        margin: EdgeInsets.only(left: 5),
+                                                        child: Text(snapshot.data[args.listIndex].filmList[index].title, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.yellow)),
+                                                      )
+                                                  )
                                                 ],
                                               )
                                             ),
@@ -115,11 +124,10 @@ class ListFilmsState extends State<ListFilms> {
                                     }
                                   )
                                 ),
-                                Divider(height: 35)
                         ]);
                     } else  {
                       // By default, show a loading spinner.
-                      return Center(child: CircularProgressIndicator(backgroundColor: Colors.yellow));
+                      return Center(child: Text(message, style: TextStyle(color: Colors.yellowAccent, fontWeight: FontWeight.bold),));
                     }
                   }
                 )

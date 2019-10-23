@@ -3,16 +3,11 @@ import 'package:firebase_admob/firebase_admob.dart';
 const String APP_ID = "ca-app-pub-6420987903580707~1985171999";
 
 const String BANNER_ID = "ca-app-pub-6420987903580707/7105636736";
-const String BANNER1_ID = "ca-app-pub-6420987903580707/2643647540";
-const String BANNER2_ID = "ca-app-pub-6420987903580707/1602028618";
 const String INTERSTITIAL_ID = "ca-app-pub-6420987903580707/6662783604";
-const String REWARDED_ID = "ca-app-pub-6420987903580707/4931679782";
 const String testDevice = 'YOUR_DEVICE_ID';
 
 class Ads {
   static BannerAd _bannerAd;
-  static BannerAd _banner1Ad;
-  static BannerAd _banner2Ad;
   static InterstitialAd _interstitialAd;
 
   static void initialize() {
@@ -26,22 +21,6 @@ class Ads {
   static BannerAd _createBannerAd() {
     return BannerAd(
       adUnitId: BANNER_ID,
-      size: AdSize.banner,
-      targetingInfo: targetingInfo,
-    );
-  }
-
-  static BannerAd _createBanner1Ad() {
-    return BannerAd(
-      adUnitId: BANNER1_ID,
-      size: AdSize.banner,
-      targetingInfo: targetingInfo,
-    );
-  }
-
-  static BannerAd _createBanner2Ad() {
-    return BannerAd(
-      adUnitId: BANNER2_ID,
       size: AdSize.banner,
       targetingInfo: targetingInfo,
     );
@@ -67,32 +46,6 @@ class Ads {
     _bannerAd = null;
   }
 
-  // SHOW/HIDE BANNER 1
-  static void showBanner1Ad() {
-    if (_banner1Ad == null) _banner1Ad = _createBanner1Ad();
-    _banner1Ad
-      ..load()
-      ..show(anchorOffset: 0.0, anchorType: AnchorType.bottom);
-  }
-
-  static void hideBanner1Ad() async {
-    await _banner1Ad.dispose();
-    _banner1Ad = null;
-  }
-
-  // SHOW/HIDE BANNER 2
-  static void showBanner2Ad() {
-    if (_banner2Ad == null) _banner2Ad = _createBanner2Ad();
-    _banner2Ad
-      ..load()
-      ..show(anchorOffset: 0.0, anchorType: AnchorType.bottom);
-  }
-
-  static void hideBanner2Ad() async {
-    await _banner2Ad.dispose();
-    _banner2Ad = null;
-  }
-
   // SHOW/HIDE INTERSTITIAL
   static void showInterstitialAd() {
     if (_interstitialAd == null) _interstitialAd = _createInterstitial();
@@ -106,13 +59,4 @@ class Ads {
     _interstitialAd = null;
   }
 
-  // SHOW/HIDE REWARED VIDEO
-  static void showRewaredVideoAd(){
-    RewardedVideoAd.instance.load(adUnitId: REWARDED_ID, targetingInfo: targetingInfo);
-      RewardedVideoAd.instance.listener = (RewardedVideoAdEvent event, {String rewardType, int rewardAmount}) {
-        if (event == RewardedVideoAdEvent.loaded) {
-          RewardedVideoAd.instance.show();
-        }
-      };
-  }
 }

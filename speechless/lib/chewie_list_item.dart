@@ -20,6 +20,7 @@ class ChewieListItem extends StatefulWidget {
 
 class _ChewieListItemState extends State<ChewieListItem> {
   ChewieController _chewieController;
+  var isFirstTime = true;
 
   @override
   void initState() {
@@ -47,8 +48,12 @@ class _ChewieListItemState extends State<ChewieListItem> {
     ..addListener(() {
       if (_chewieController.isFullScreen == true) {
         Ads.hideBannerAd();
+        this.isFirstTime = false;
       } else {
         Ads.showBannerAd();
+        if(!isFirstTime){
+          Ads.showInterstitialAd();
+        }
       }
     });
   }

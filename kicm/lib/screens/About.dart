@@ -54,7 +54,7 @@ class About extends StatelessWidget {
                 children: <Widget>[
                   Text("Mục đích của ứng dụng:", style: TextStyle(color: Colors.yellow,fontWeight: FontWeight.bold),),
                   Divider(),
-                  Text("Tổng hợp những video hay của K-ICM", style: TextStyle(color: Colors.yellow), textAlign: TextAlign.left),
+                  Text("Tổng hợp những video hay của KICM", style: TextStyle(color: Colors.yellow), textAlign: TextAlign.left),
                   Text("Cập nhật những video nhạc mới nhất", style: TextStyle(color: Colors.yellow), textAlign: TextAlign.left),
                   Text("Hệ thống các video theo menu", style: TextStyle(color: Colors.yellow), textAlign: TextAlign.left)
               ],)

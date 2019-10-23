@@ -1,5 +1,5 @@
 class ListIndex {
-  final num index;
+  final num listIndex;
 
-  ListIndex(this.index);
+  ListIndex(this.listIndex);
 }

@@ -1,61 +1,110 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:swkicm/main.dart';
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:swkicm/models/Ads.dart';
-import 'package:swkicm/models/FilmInfo.dart';
-import 'package:swkicm/youtube_player/progress_bar.dart';
-import 'package:swkicm/youtube_player/youtube_player.dart';
-// import 'package:swkicm/youtube_player/youtube_player_flutter.dart';
-// import 'package:youtube_player/youtube_player.dart';
-// import 'package:swkicm/youtube_player/youtube_player.dart';
-// import 'package:swkicm/youtube_player/youtube_player_flutter.dart';
-// import 'package:swkicm/models/ChewieItem.dart';
+import 'package:swkicm/models/DetailAgrs.dart';
+import 'package:swkicm/screens/PlayerUI.dart';
+import 'package:swkicm/youtube_player/youtube_player_controller.dart';
+import 'package:swkicm/youtube_player/youtube_player_flutter.dart';
 
+final youtubePlayerKey = GlobalKey<DetailState>();
+
+typedef YoutubePlayerControllerCallback(YoutubePlayerController controller);
 
 class Detail extends StatefulWidget {
-  final String title;
-  final String message;
-
-  const Detail({
-    Key key,
-    this.title,
-    this.message,
-  }) : super(key: key);
+  Duration controlsTimeOut = const Duration(seconds: 3);
+  YoutubePlayerControllerCallback onPlayerInitialized;
 
   DetailState createState() => DetailState();
 }
 
 class DetailState extends State<Detail> {
-  var isFirstTime = true;
+  YoutubePlayerController ytController;
+  String videoId = '';
 
-  // Future<bool> _onWillPop() {
-  //   // return SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  // }
+  YoutubePlayerController get controller => ytController;
+
+  set controller(YoutubePlayerController c) => ytController = c;
+
+  final _showControls = ValueNotifier<bool>(false);
+
+  int currentPosition = 0;
+  int totalDuration = 0;
+  double loadedFraction = 0;
+  Timer _timer;
+  final textInputController = TextEditingController();
+
+  String _currentVideoId;
 
   @override
   void initState() {
     super.initState();
-    Ads.hideBannerAd();
-    Ads.showBanner1Ad();
 
-    new Timer(const Duration(seconds: 18), () {
-      setState(() {
-        Ads.hideBanner1Ad();
-      });
+    // Timer(const Duration(seconds: 60), () {
+    //   setState(() {
+    //     InterstitialAd(
+    //       adUnitId: INTERSTITIAL_ID,
+    //       targetingInfo: Ads.targetingInfo,
+    //     )..load()..show();
+    //   });
+    // });
+
+    _loadController();
+    _currentVideoId = videoId;
+    _showControls.addListener(() {
+      _timer?.cancel();
+      if (_showControls.value)
+        _timer =
+          Timer(widget.controlsTimeOut, () => _showControls.value = false);
     });
+  }
+
+   _loadController({WebViewController webController}) {
+    controller = YoutubePlayerController(videoId);
+    if (webController != null)
+      controller.value =
+          controller.value.copyWith(webViewController: webController);
+    controller.addListener(listener);
+    if (widget.onPlayerInitialized != null)
+      widget.onPlayerInitialized(controller);
+  }
+
+  void listener() async {
+    if (controller.value.isLoaded && mounted) {
+      setState(() {
+        currentPosition = controller.value.position.inMilliseconds;
+        totalDuration = controller.value.duration.inMilliseconds;
+        loadedFraction = currentPosition / totalDuration;
+        if (loadedFraction > 1) loadedFraction = 1;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final FilmInfo args = ModalRoute.of(context).settings.arguments;
-    return  Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Chi tiết'),
-      //   backgroundColor: Color.fromRGBO(50, 50, 50, 1),
-      // ),
+    if (_currentVideoId != videoId) {
+      _currentVideoId = videoId;
+      _loadController(webController: controller.value.webViewController);
+      controller.load();
+      Future.delayed(Duration(milliseconds: 500),
+          () => controller.seekTo(Duration(seconds: 0)));
+    }
+
+    final DetailAgrs args = ModalRoute.of(context).settings.arguments;
+    setState(() {
+     videoId =  args.videoId;
+    });
+    
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(args.title, style: TextStyle(color: Colors.yellow, fontWeight: FontWeight.bold),),
+        iconTheme: new IconThemeData(color: Colors.yellowAccent),
+        backgroundColor: Color.fromRGBO(50, 50, 50, 1),
+      ),
       body: new Stack(
         children: <Widget>[
           new Container(
@@ -64,40 +113,56 @@ class DetailState extends State<Detail> {
             ),
           ),
           new Container(
+            padding: EdgeInsets.only(top: 60),
             child: Column(
             children: <Widget>[
-              YoutubePlayer(
-                  context: context,
-                  videoId: args.videoKey,
-                  liveUIColor: Colors.amber,
-                  progressColors: ProgressColors(
-                    playedColor: Colors.amber,
-                    handleColor: Colors.amberAccent,
-                  )
-              ),
               Container(
-                padding: EdgeInsets.only(left: 10, right: 10),
-                margin: EdgeInsets.only(top: 15),
-                child: Column(
-                  children: <Widget>[
-                    Text("Không xem được => Chọn danh sách video => Chọn lại video. \nĐội ngũ phát triển ứng dụng sẽ khắc phục sớm lỗi này. Xin cảm ơn", style: TextStyle(color: Colors.red),),
-                  ],
-                ),
+                child: PlayerUI.buildPlayer(controller, _showControls),
               ),
+              
               Container(
-                padding: EdgeInsets.only(left: 10, right: 10),
-                margin: EdgeInsets.only(top: 15),
-                child: RaisedButton(
-                  color: Colors.yellow,
-                  onPressed: () {
-                    Navigator.pop(context, true);
-                  },
-                  child: Text('Danh sách nhạc', style: TextStyle(color: Colors.red),),
-                ),
+                margin: EdgeInsets.only(top: 10, bottom: 10),
+                padding: EdgeInsets.only(left: 10, right: 10,top: 10),
+                child: Container(
+                  child: Text(args.title, style: TextStyle(color: Colors.yellow, fontWeight: FontWeight.bold),),
+                )
               ),
-              Container(
-                padding: EdgeInsets.only(left: 10, right: 10),
-                child: Text(args.content, style: TextStyle(color: Colors.yellow, fontWeight: FontWeight.bold),),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  RaisedButton(
+                    color: Colors.yellow,
+                    onPressed: () {
+                      setState(() {
+                        videoId = '';
+                      });
+
+                      Timer(Duration(seconds: 1), (){
+                        setState(() {
+                          videoId = args.videoId;
+                        });
+                      });
+                    },
+                    child: Text('Play', style: TextStyle(color: Colors.blue),),
+                  ),
+                  RaisedButton(
+                      color: Colors.yellow,
+                      onPressed: () {
+                        Ads.showBannerAd();
+                        var rng = new Random();
+                        if(rng.nextInt(10) > 5){
+                          InterstitialAd(
+                            adUnitId: INTERSTITIAL_ID,
+                            targetingInfo: Ads.targetingInfo,
+                          )..load()..show();
+                        }
+
+                        Navigator.pop(context, true);
+                      },
+                      child: Text('Danh sách video', style: TextStyle(color: Colors.red),),
+                    ),
+                ],
               )
           ],)
         ),

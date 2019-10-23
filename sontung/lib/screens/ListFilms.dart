@@ -36,7 +36,6 @@ class ListFilms extends StatefulWidget {
 class ListFilmsState extends State<ListFilms> {
 
   Future<bool> _onWillPop() {
-    Ads.showBannerAd();
     Navigator.pop(context, true);
   }
 
@@ -50,9 +49,6 @@ class ListFilmsState extends State<ListFilms> {
   @override
   void dispose() {
     super.dispose();
-    Ads.hideBannerAd();
-    Ads.hideBanner1Ad();
-    Ads.hideBanner2Ad();
   }
 
   @override
@@ -103,7 +99,13 @@ class ListFilmsState extends State<ListFilms> {
                                               child: Row(
                                                 children: <Widget>[
                                                   Image.network(THUMBNAIL_URL_ROOT + snapshot.data[0].filmList[index].videoKey + THUMNAIL_SUFFIX, height: 65, width: 120),
-                                                  Text("  " + snapshot.data[0].filmList[index].title, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.yellow)),
+                                                  Expanded(
+                                                    child:
+                                                      Container(
+                                                        margin: EdgeInsets.only(left: 5),
+                                                        child: Text(snapshot.data[0].filmList[index].title, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.yellow)),
+                                                      )
+                                                  )
                                                 ],
                                               )
                                             ),
