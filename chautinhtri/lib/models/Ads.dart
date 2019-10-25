@@ -7,9 +7,6 @@ const String testDevice = 'YOUR_DEVICE_ID';
 
 class Ads {
   static BannerAd _bannerAd;
-  static BannerAd _banner1Ad;
-  static BannerAd _banner2Ad;
-  static BannerAd _banner3Ad;
   static InterstitialAd _interstitialAd;
 
   static void initialize() {
@@ -40,7 +37,7 @@ class Ads {
     if (_bannerAd == null) _bannerAd = _createBannerAd();
     _bannerAd
       ..load()
-      ..show(anchorOffset: 0.0, anchorType: AnchorType.bottom);
+      ..show(anchorOffset: 85.0, anchorType: AnchorType.top, );
   }
 
   static void hideBannerAd() async {

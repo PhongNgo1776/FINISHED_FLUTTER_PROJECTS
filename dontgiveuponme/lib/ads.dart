@@ -3,6 +3,7 @@ import 'package:firebase_admob/firebase_admob.dart';
 const String APP_ID = "ca-app-pub-6420987903580707~5235451632";
 const String BANNER_ID = "ca-app-pub-6420987903580707/8129347907";
 const String INTERSTITIAL_ID = "ca-app-pub-6420987903580707/5334264803";
+const String REWARDED_VIDEO_ID = "ca-app-pub-6420987903580707/5848654484";
 const String testDevice = 'YOUR_DEVICE_ID';
 
 class Ads {
@@ -36,7 +37,7 @@ class Ads {
     if (_bannerAd == null) _bannerAd = _createBannerAd();
     _bannerAd
       ..load()
-      ..show(anchorOffset: 0.0, anchorType: AnchorType.bottom);
+      ..show(anchorOffset: 85.0, anchorType: AnchorType.top, );
   }
 
   static void hideBannerAd() async {
@@ -54,5 +55,14 @@ class Ads {
   static void hideInterstitialAd() async {
     await _interstitialAd.dispose();
     _interstitialAd = null;
+  }
+
+  static void showRewaredVideoAd(){
+    RewardedVideoAd.instance.load(adUnitId: REWARDED_VIDEO_ID, targetingInfo: targetingInfo);
+      RewardedVideoAd.instance.listener = (RewardedVideoAdEvent event, {String rewardType, int rewardAmount}) {
+        if (event == RewardedVideoAdEvent.loaded) {
+          RewardedVideoAd.instance.show();
+        }
+      };
   }
 }

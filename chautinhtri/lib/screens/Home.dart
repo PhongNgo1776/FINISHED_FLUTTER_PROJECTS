@@ -76,8 +76,8 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
       onWillPop: _onWillPop,
       child: Scaffold(
       appBar: AppBar(
-        title: Text('Phim Hồng Kông Xưa Hay', style: TextStyle(color: Color.fromRGBO(210, 255, 77, 1)),),
-        iconTheme: new IconThemeData(color: Color.fromRGBO(210, 255, 77, 1)),
+        title: Text('Phim Châu Tinh Trì', style: TextStyle(color: Colors.yellow, fontWeight: FontWeight.bold),),
+        iconTheme: new IconThemeData(color: Colors.yellowAccent),
         backgroundColor: Color.fromRGBO(50, 50, 50, 1),
       ),
       drawer: DrawerMenu(),
@@ -89,9 +89,9 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
               SliverList(
                 delegate: SliverChildListDelegate(
                     [Container(
-                          height: 200, 
+                          height: 260, 
                           color: Colors.black,
-                          padding: EdgeInsets.only(left: 10, right: 10),
+                          padding: EdgeInsets.only(left: 10, right: 10, top: 50),
                           child: Column(
                             children: <Widget>[
                               Row(children: <Widget>[

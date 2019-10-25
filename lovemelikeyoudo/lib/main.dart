@@ -60,7 +60,7 @@ class MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Love Me Like You Do - Ellie Goulding', style: TextStyle(color: Color.fromRGBO(210, 255, 77, 1)),),
+        title: Text('Love Me Like You Do - Ellie Goulding', style: TextStyle(color: Colors.yellowAccent),),
         backgroundColor: Color.fromRGBO(50, 50, 50, 1),
       ),
       body: NestedScrollView(
@@ -71,12 +71,16 @@ class MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
               SliverList(
                 delegate: SliverChildListDelegate(
                     [Container(
-                      height: 250, 
-                      color: Colors.yellow[50],
-                      child: ChewieListItem(
+                      height: 300, 
+                      color: Colors.black,
+                      child: Container(
+                              margin: EdgeInsets.only(top: 60),
+                              color: Colors.black,
+                              child: ChewieListItem(
                               videoPlayerController: _videoPlayerController,
                               looping: true,
                             ),
+                      )
                     )]),
               ),
             ];

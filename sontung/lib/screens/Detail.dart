@@ -97,11 +97,10 @@ class DetailState extends State<Detail> {
     });
     
     return  Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(0),
-        child: AppBar( // Here we create one to set status bar color
-          backgroundColor: Colors.black, 
-        )
+      appBar: AppBar(
+        title: Text(args.title, style: TextStyle(color: Colors.yellow, fontWeight: FontWeight.bold),),
+        iconTheme: new IconThemeData(color: Colors.yellowAccent),
+        backgroundColor: Color.fromRGBO(50, 50, 50, 1),
       ),
       body: new Stack(
         children: <Widget>[
@@ -111,6 +110,7 @@ class DetailState extends State<Detail> {
             ),
           ),
           new Container(
+            padding: EdgeInsets.only(top: 60),
             child: Column(
             children: <Widget>[
               Container(

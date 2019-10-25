@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:swnopromises/ads.dart';
+import 'package:sw1000years/ads.dart';
 import 'package:video_player/video_player.dart';
-import 'package:swnopromises/chewie_list_item.dart';
+import 'package:sw1000years/chewie_list_item.dart';
 
 void main() => runApp(MaterialApp(
       home: MyApp(),
@@ -22,30 +22,7 @@ class MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    _videoPlayerController = VideoPlayerController.network('https://phongngo1776.github.io/Videos/NoPromises/NoPromises.mp4')
-    ..addListener(() {
-        final bool isPlaying = _videoPlayerController.value.isPlaying;
-        if(isPlaying){
-          if(isFirstTime){
-            Ads.hideInterstitialAd();
-          } else {
-            Ads.showInterstitialAd();
-          }
-
-          isFirstTime = false;
-          // new Timer(const Duration(milliseconds: 5000), () {
-          //   setState(() {
-          //     myInterstitial.dispose();
-          //   });
-          // });
-        } else {
-          Ads.hideInterstitialAd();
-          if(!isFirstTime){
-            Ads.showRewaredVideoAd();
-          }
-        }
-        // Toast.show(isPlaying.toString(), context);
-      });
+    _videoPlayerController = VideoPlayerController.network('https://phongngo1776.github.io/Videos/AThousandsYears/AThousandsYears.mp4');
     
     tabController = TabController(
       length: 2,
@@ -60,7 +37,7 @@ class MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('No Promises - Shayne Ward', style: TextStyle(color: Color.fromRGBO(210, 255, 77, 1)),),
+        title: Text('A Thousands Years - Christina Perri', style: TextStyle(color: Colors.yellowAccent),),
         backgroundColor: Color.fromRGBO(50, 50, 50, 1),
       ),
       body: NestedScrollView(
@@ -71,12 +48,16 @@ class MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
               SliverList(
                 delegate: SliverChildListDelegate(
                     [Container(
-                      height: 250, 
+                      height: 300, 
                       color: Colors.black,
-                      child: ChewieListItem(
+                      child: Container(
+                              margin: EdgeInsets.only(top: 60),
+                              color: Colors.black,
+                              child: ChewieListItem(
                               videoPlayerController: _videoPlayerController,
                               looping: true,
                             ),
+                      )
                     )]),
               ),
             ];
@@ -157,41 +138,49 @@ class DemoTabState extends State<DemoTab> with AutomaticKeepAliveClientMixin<Dem
           margin: EdgeInsets.only(bottom: 3, left: 10),
           alignment: Alignment.topCenter,
           child: Text(
-            "\nHey baby, when we are together, doing things that we love \n " +
-            "Every time you're near I feel like I'm in heaven, feeling high \n " +
-            "I don't want to let go, girl \n " +
-            "I just need you to know girl \n " +
+            "\nHeart beats fast \n " +
+            "Colors and promises \n " +
+            "How to be brave? \n " +
+            "How can I love when I'm afraid to fall? \n " +
+            "But watching you stand alone \n " +
+            "All of my doubt suddenly goes away somehow \n " +
+            "One step closer \n " +
             " \n " +
-            "I don't wanna run away, baby you're the one I need tonight \n " +
-            "No promises \n " +
-            "Baby, now I need to hold you tight, I just wanna die in your arms \n " +
+            "I have died everyday waiting for you \n " +
+            "Darling don't be afraid I have loved you \n " +
+            "For a thousand years \n " +
+            "I'll love you for a thousand more \n " +
             " \n " +
-            "Here tonight \n " +
+            "Time stands still \n " +
+            "Beauty in all she is \n " +
+            "I will be brave \n " +
+            "I will not let anything take away \n " +
+            "What's standing in front of me \n " +
+            "Every breath \n " +
+            "Every hour has come to this \n " +
+            "One step closer \n " +
             " \n " +
-            "Hey baby, when we are together, doing things that we love \n " +
-            "Everytime you're near I feel like I'm in heaven, feeling high \n " +
-            "I don't want to let go, girl \n " +
-            "I just need you you to know girl \n " +
+            "I have died everyday waiting for you \n " +
+            "Darling don't be afraid I have loved you \n " +
+            "For a thousand years \n " +
+            "I'll love you for a thousand more \n " +
             " \n " +
-            "I don't wanna run away, baby you're the one I need tonight \n " +
-            "No promises \n " +
-            "Baby, now I need to hold you tight, I just wanna die in your arms \n " +
+            "And all along I believed I would find you \n " +
+            "Time has brought your heart to me \n " +
+            "I have loved you for a thousand years \n " +
+            "I'll love you for a thousand more \n " +
+            "One step closer \n " +
+            "One step closer \n " +
             " \n " +
-            "I don't want to run away, I want to stay forever, thru Time and Time \n " +
-            "No promises \n " +
+            "I have died everyday waiting for you \n " +
+            "Darling don't be afraid I have loved you \n " +
+            "For a thousand years \n " +
+            "I'll love you for a thousand more \n " +
             " \n " +
-            "I don't wanna run away, I don't wanna be alone \n " +
-            "No Promises \n " +
-            "Baby, now I need to hold you tight, now and forever my love \n " +
-            " \n " +
-            "No promises \n " +
-            "I don't wanna run away, baby you're the one I need tonight \n " +
-            "No promises \n " +
-            "Baby, now I need to hold you tight, I just wanna die in your arms \n " +
-            "I don't wanna run away, baby you're the one I need tonight \n " +
-            "No promises \n " +
-            "Baby, now I need to hold you tight, I just wanna die in your arms \n " +
-            "Here tonight \n "
+            "And all along I believed I would find you \n " +
+            "Time has brought your heart to me \n " +
+            "I have loved you for a thousand years \n " +
+            "I'll love you for a thousand more \n " 
           ),
 
         );

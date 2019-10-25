@@ -16,7 +16,6 @@ class Ads {
 
   static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
     testDevices: testDevice != null ? <String>[testDevice] : null,
-    keywords: ['music', 'song', 'beauty', 'dress', 'fashion', 'model', 'movie', 'girl', 'sing', 'skin', 'makeup', 'hair', 'teenager', 'teen', 'shopping', 'wed', 'animal', 'phone', 'star', 'cook', 'cute', 'show', 'design']
   );
 
   static BannerAd _createBannerAd() {
@@ -38,7 +37,7 @@ class Ads {
     if (_bannerAd == null) _bannerAd = _createBannerAd();
     _bannerAd
       ..load()
-      ..show(anchorOffset: 0.0, anchorType: AnchorType.bottom);
+      ..show(anchorOffset: 85.0, anchorType: AnchorType.top, );
   }
 
   static void hideBannerAd() async {

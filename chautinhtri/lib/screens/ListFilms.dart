@@ -88,7 +88,7 @@ class ListFilmsState extends State<ListFilms> {
                             child:  ListView.builder(
                                     scrollDirection: Axis.vertical,
                                     shrinkWrap: true,
-                                    padding: EdgeInsets.only(top: 20, left: 10, right: 10),
+                                    padding: EdgeInsets.only(top: 60, left: 10, right: 10),
                                     itemCount: snapshot.data[0].filmList.length,
                                     itemBuilder: (context, index) {
                                       return GestureDetector(
@@ -121,7 +121,6 @@ class ListFilmsState extends State<ListFilms> {
                                     }
                                   )
                                 ),
-                                Divider(height: 35)
                         ]);
                     } else  {
                       // By default, show a loading spinner.

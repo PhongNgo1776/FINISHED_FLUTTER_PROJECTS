@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:swthanhlongfilm/youtube_player/youtube_player.dart';
+import 'package:swthanhlongfilm/youtube_player/YoutubePlayerValue.dart';
+import 'package:swthanhlongfilm/youtube_player/youtube_player_controller.dart';
 
 class ProgressBar extends StatefulWidget {
   ProgressBar(
@@ -179,9 +180,9 @@ class _ProgressBarPainter extends CustomPainter {
 /// Colors to be assigned to [ProgressBar].
 class ProgressColors {
   ProgressColors({
-    Color playedColor: const Color.fromRGBO(255, 0, 0, 0.9),
+    Color playedColor: const Color.fromRGBO(255, 255, 0, 0.9),
     Color bufferedColor: const Color.fromRGBO(200, 200, 200, 0.9),
-    Color handleColor: const Color.fromRGBO(255, 0, 0, 1.0),
+    Color handleColor: const Color.fromRGBO(255, 255, 0, 1.0),
     Color backgroundColor: const Color.fromRGBO(10, 10, 10, 0.5),
   })  : playedPaint = Paint()..color = playedColor,
         bufferedPaint = Paint()..color = bufferedColor,

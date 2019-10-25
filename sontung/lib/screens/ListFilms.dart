@@ -34,7 +34,8 @@ class ListFilms extends StatefulWidget {
 }
 
 class ListFilmsState extends State<ListFilms> {
-
+  String message = 'Đang Tải...';
+  
   Future<bool> _onWillPop() {
     Navigator.pop(context, true);
   }
@@ -44,6 +45,12 @@ class ListFilmsState extends State<ListFilms> {
     super.initState();
 
     Ads.showInterstitialAd();
+
+    Timer(Duration(seconds: 3), () {
+      setState(() {
+       message = "Vui lòng kết nối internet. Thanks 😘😘😘";
+      });
+    });
   }
 
   @override
@@ -83,7 +90,7 @@ class ListFilmsState extends State<ListFilms> {
                             child:  ListView.builder(
                                     scrollDirection: Axis.vertical,
                                     shrinkWrap: true,
-                                    padding: EdgeInsets.only(top: 20, left: 10, right: 10),
+                                    padding: EdgeInsets.only(top: 50, left: 10, right: 10),
                                     itemCount: snapshot.data[0].filmList.length,
                                     itemBuilder: (context, index) {
                                       return GestureDetector(
@@ -116,11 +123,10 @@ class ListFilmsState extends State<ListFilms> {
                                     }
                                   )
                                 ),
-                                Divider(height: 35)
                         ]);
                     } else  {
                       // By default, show a loading spinner.
-                      return Center(child: CircularProgressIndicator(backgroundColor: Colors.yellow));
+                      return Center(child: Text(message, style: TextStyle(color: Colors.yellowAccent, fontWeight: FontWeight.bold),));
                     }
                   }
                 )
