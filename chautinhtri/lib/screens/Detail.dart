@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:swcttfilm/main.dart';
+import 'package:swcttfilm/models/Ads.dart';
 import 'package:swcttfilm/screens/PlayerUI.dart';
 import 'package:swcttfilm/youtube_player/youtube_player_controller.dart';
 import 'package:swcttfilm/youtube_player/youtube_player_flutter.dart';
@@ -32,6 +33,10 @@ class DetailState extends State<Detail> {
   int totalDuration = 0;
   double loadedFraction = 0;
   Timer _timer;
+
+  String title = '';
+  double paddingTop = 60;
+  Object header;
   final textInputController = TextEditingController();
 
   String _currentVideoId;
@@ -40,14 +45,13 @@ class DetailState extends State<Detail> {
   void initState() {
     super.initState();
 
-    // Timer(const Duration(seconds: 60), () {
-    //   setState(() {
-    //     InterstitialAd(
-    //       adUnitId: INTERSTITIAL_ID,
-    //       targetingInfo: Ads.targetingInfo,
-    //     )..load()..show();
-    //   });
-    // });
+    updateView();
+
+    Timer.periodic(new Duration(seconds: 2), (timer) {
+      setState(() {
+       updateView();
+      });
+    });
 
     _loadController();
     _currentVideoId = videoId;
@@ -57,6 +61,25 @@ class DetailState extends State<Detail> {
         _timer =
           Timer(widget.controlsTimeOut, () => _showControls.value = false);
     });
+  }
+
+  updateView(){
+    if(Ads.isFullScreen){
+         paddingTop = 0;
+         header = PreferredSize(
+          preferredSize: Size.fromHeight(0),
+          child: AppBar( // Here we create one to set status bar color
+            backgroundColor: Colors.black, 
+          )
+        );
+       } else {
+         paddingTop = 60;
+         header =  AppBar(
+            title: Text(title, style: TextStyle(color: Colors.yellow, fontWeight: FontWeight.bold),),
+            iconTheme: new IconThemeData(color: Colors.yellowAccent),
+            backgroundColor: Color.fromRGBO(50, 50, 50, 1),
+          );
+       }
   }
 
    _loadController({WebViewController webController}) {
@@ -91,16 +114,13 @@ class DetailState extends State<Detail> {
     }
 
     final FilmInfo args = ModalRoute.of(context).settings.arguments;
+    title = args.title;
     setState(() {
      videoId =  args.videoKey;
     });
     
     return  Scaffold(
-      appBar: AppBar(
-        title: Text(args.title, style: TextStyle(color: Colors.yellow, fontWeight: FontWeight.bold),),
-        iconTheme: new IconThemeData(color: Colors.yellowAccent),
-        backgroundColor: Color.fromRGBO(50, 50, 50, 1),
-      ),
+      appBar: header,
       body: new Stack(
         children: <Widget>[
           new Container(
@@ -109,7 +129,7 @@ class DetailState extends State<Detail> {
             ),
           ),
           new Container(
-            padding: EdgeInsets.only(top: 60),
+            padding: EdgeInsets.only(top: paddingTop),
             child: Column(
             children: <Widget>[
               Container(

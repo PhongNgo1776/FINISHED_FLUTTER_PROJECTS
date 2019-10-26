@@ -8,6 +8,7 @@ const String testDevice = 'YOUR_DEVICE_ID';
 class Ads {
   static BannerAd _bannerAd;
   static InterstitialAd _interstitialAd;
+  static bool isFullScreen = false;
 
   static void initialize() {
     FirebaseAdMob.instance.initialize(appId: APP_ID);

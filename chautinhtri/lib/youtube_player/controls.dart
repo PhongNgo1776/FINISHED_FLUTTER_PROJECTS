@@ -134,7 +134,6 @@ class _BottomBarState extends State<BottomBar> {
         adUnitId: INTERSTITIAL_ID,
         targetingInfo: Ads.targetingInfo,
       )..load()..show();
-      Ads.showBannerAd();
       
       controller.exitFullScreen();
       triggeredFullScreenByButton = false;

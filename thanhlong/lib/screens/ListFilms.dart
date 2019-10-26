@@ -37,7 +37,6 @@ class ListFilmsState extends State<ListFilms> {
   String message = 'Đang Tải...';
 
   Future<bool> _onWillPop() {
-    Ads.showBannerAd();
     Navigator.pop(context, true);
   }
 
