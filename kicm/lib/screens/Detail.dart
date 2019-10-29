@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:swkicm/models/Ads.dart';
 import 'package:swkicm/models/DetailAgrs.dart';
@@ -40,6 +39,7 @@ class DetailState extends State<Detail> {
   String title = '';
   double paddingTop = 60;
   Object header;
+  bool isFullScreen = false;
   final textInputController = TextEditingController();
 
   String _currentVideoId;
@@ -47,14 +47,6 @@ class DetailState extends State<Detail> {
   @override
   void initState() {
     super.initState();
-
-    updateView();
-
-    Timer.periodic(new Duration(seconds: 2), (timer) {
-      setState(() {
-       updateView();
-      });
-    });
 
     _loadController();
     _currentVideoId = videoId;
@@ -67,7 +59,7 @@ class DetailState extends State<Detail> {
   }
 
   updateView(){
-    if(Ads.isFullScreen){
+    if(isFullScreen){
          paddingTop = 0;
          header = PreferredSize(
           preferredSize: Size.fromHeight(0),
@@ -96,6 +88,12 @@ class DetailState extends State<Detail> {
   }
 
   void listener() async {
+    bool isChangeScreen = controller.value.isFullScreen != isFullScreen;
+    if(isChangeScreen){
+      isFullScreen = controller.value.isFullScreen;
+      updateView();
+    }
+
     if (controller.value.isLoaded && mounted) {
       setState(() {
         currentPosition = controller.value.position.inMilliseconds;
@@ -117,12 +115,13 @@ class DetailState extends State<Detail> {
     }
 
     final DetailAgrs args = ModalRoute.of(context).settings.arguments;
-    title = args.title;
     setState(() {
-     videoId =  args.videoId;
+      title = args.title;
+      updateView();
+      videoId =  args.videoId;
     });
     
-    return Scaffold(
+    return  Scaffold(
       appBar: header,
       body: new Stack(
         children: <Widget>[
@@ -187,6 +186,7 @@ class DetailState extends State<Detail> {
       ])
     );
   }
+
 
   @override
   void dispose() {
