@@ -1,32 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
 
-import 'package:swcttfilm/main.dart';
-import 'package:swcttfilm/models/Ads.dart';
-import 'package:swcttfilm/models/TypeVideo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:http/http.dart' as http;
-
-const THUMBNAIL_URL_ROOT = "https://i3.ytimg.com/vi/";
-const THUMNAIL_SUFFIX = "/mqdefault.jpg";
-
-Future<List<TypeVideo>> fetchData() async {
-  final response = await http.get('https://beer-199402.firebaseapp.com/api/v1/chautinhtri');
-  
-  if (response.statusCode == 200) {
-    // If the call to the server was successful, parse the JSON.
-    // return TypeVideo.fromJson(json.decode(response.body));
-
-    final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
-
-    return parsed.map<TypeVideo>((json) => TypeVideo.fromJson(json)).toList();
-  } else {
-    // If that call was not successful, throw an error.
-    throw Exception('Failed to load post');
-  }
-}
+import 'package:dio/dio.dart';
+import 'package:swcttfilm/main.dart';
 
 class ListFilms extends StatefulWidget {
   ListFilms({Key key}) : super(key: key);
@@ -34,6 +12,12 @@ class ListFilms extends StatefulWidget {
 }
 
 class ListFilmsState extends State<ListFilms> {
+  bool isLoading = false;
+  String title = 'Playlists';
+  List items = new List();
+  final dio = new Dio();
+  String message = 'Loading...';
+  String fbToken = '';
 
   Future<bool> _onWillPop() {
     Navigator.pop(context, true);
@@ -42,11 +26,21 @@ class ListFilmsState extends State<ListFilms> {
   @override
   void initState() {
     super.initState();
+    this._getData();
+    this._getToken();
 
-    Ads.showInterstitialAd();
-    // Timer.periodic(new Duration(seconds: 3), (timer) {
-    //   Ads.showBanner1Ad();
-    // });
+    Timer(Duration(seconds: 4), () {
+      setState(() {
+       message = "Vui lòng kết nối Wifi. Thanks 😘😘😘";
+      });
+    });
+
+    Timer.periodic(new Duration(seconds: 4), (timer) {
+      if(items.length == 0){
+        _getData();
+        _getToken();
+      }
+    });
 
   }
 
@@ -55,8 +49,65 @@ class ListFilmsState extends State<ListFilms> {
     super.dispose();
   }
 
+  Widget _buildProgressIndicator() {
+    return new Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: new Center(
+        child: new Opacity(
+          opacity: isLoading ? 1.0 : 00,
+          child: Text(message, style: TextStyle(color: Colors.yellowAccent, fontWeight: FontWeight.bold),)
+        ),
+      ),
+    );
+  }
+
+  void _getData() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    final response = await dio.get('https://beer-199402.firebaseapp.com/api/v1/HkRetailFilms_v2');
+    
+    setState(() {
+      isLoading = false;
+      items = response.data[0]['filmList'];
+      //Toast.show('ddddd: ' + items.length.toString(), context);
+    });
+  }
+
+  void _getToken() async {
+    final response = await dio.get('https://beer-199402.firebaseapp.com/api/v1/FbLongLiveToken');
+    
+    setState(() {
+      fbToken = response.data['token'];
+    });
+  }
+
+  void goToPath(dynamic item) async{
+    String path = '';
+    if(item['videoKey'].length == 11){
+      path = '/ytDetail';
+      Navigator.pushNamed(context, path, arguments: FilmInfo(item['title'], item['content'], item['videoKey'])); 
+    } else {
+      path = '/fbDetail';
+      String url = "https://graph.facebook.com/v3.2/" + item['videoKey'] + "?fields=source&access_token=" + fbToken;
+      final response = await dio.get(url);
+      String videoUrl = response.data.substring(11, response.data.length - 26);
+      Navigator.pushNamed(context, path, arguments: FilmInfo(item['title'], item['content'], videoUrl.replaceAll(new RegExp(r'\\'), ''))); 
+    }
+  }
+
+  Image getImage(String key){
+    if(key.length == 11){
+      return Image.network("https://i.ytimg.com/vi/" + key + "/mqdefault.jpg", height: 90, width: 150);
+    } else {
+      return Image.asset("images/banner.png", height: 90, width: 150);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
       statusBarColor: Colors.black12, //or set color with: Color(0xFF0000FF)
     ));
@@ -64,8 +115,8 @@ class ListFilmsState extends State<ListFilms> {
       onWillPop: _onWillPop,
       child:  Scaffold(
       appBar: AppBar(
-        title: Text('Phim Châu Tinh Trì', style: TextStyle(color: Color.fromRGBO(210, 255, 77, 1)),),
-        iconTheme: new IconThemeData(color: Color.fromRGBO(210, 255, 77, 1)),
+        title: Text(title, style: TextStyle(color: Colors.yellow, fontWeight: FontWeight.bold),),
+        iconTheme: new IconThemeData(color: Colors.yellow),
         backgroundColor: Color.fromRGBO(50, 50, 50, 1),
       ),
       body: new Stack(
@@ -75,58 +126,48 @@ class ListFilmsState extends State<ListFilms> {
               image: new DecorationImage(image: new AssetImage('images/bg.png'), fit: BoxFit.cover,),
             ),
           ),
-          new Center(
-                child: 
-                    FutureBuilder<List<TypeVideo>>(
-                    future: fetchData(),
-                    builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Column(
-                        children: <Widget>[
-                          new Expanded(
-                            child:  ListView.builder(
-                                    scrollDirection: Axis.vertical,
-                                    shrinkWrap: true,
-                                    padding: EdgeInsets.only(top: 60, left: 10, right: 10),
-                                    itemCount: snapshot.data[0].filmList.length,
-                                    itemBuilder: (context, index) {
-                                      return GestureDetector(
-                                        onTap: () { Navigator.pushNamed(context, '/detail', arguments: FilmInfo(snapshot.data[0].filmList[index].title, snapshot.data[0].filmList[index].content, snapshot.data[0].filmList[index].videoKey)); },
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Container(
-                                              padding: EdgeInsets.only(left: 10, top: 3, bottom: 3),
-                                              alignment: Alignment.center,
-                                              // color: Colors.yellow,
-                                              decoration: myBoxDecoration(),
-                                              child: Row(
-                                                children: <Widget>[
-                                                  Image.network(THUMBNAIL_URL_ROOT + snapshot.data[0].filmList[index].videoKey + THUMNAIL_SUFFIX, height: 65, width: 120),
-                                                  Expanded(
-                                                    child:
-                                                      Container(
-                                                        margin: EdgeInsets.only(left: 5),
-                                                        child: Text(snapshot.data[0].filmList[index].title, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.yellow)),
-                                                      )
-                                                  )
-                                                ],
-                                              )
-                                            ),
-                                            Divider(height: 10), //  
-                                          ]
-                                        )
-                                      );
-                                    }
+          new Container(
+            padding: EdgeInsets.only(top: 60),
+            child: new ListView.builder(
+              //+1 for progressbar
+              itemCount: items.length + 1,
+              itemBuilder: (BuildContext context, int index) {
+                if (index == items.length) {
+                  return _buildProgressIndicator();
+                } else {
+                  return GestureDetector(
+                    onTap: () { 
+                     goToPath(items[index]);
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.only(left: 10, top: 3, bottom: 3),
+                          alignment: Alignment.center,
+                          // color: Colors.yellow,
+                          decoration: myBoxDecoration(),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              getImage(items[index]['videoKey']),
+                              Expanded(
+                                child:
+                                  Container(
+                                    margin: EdgeInsets.only(left: 5),
+                                    child: Text(items[index]['title'], style: TextStyle(fontWeight: FontWeight.bold, color: Colors.yellow, fontSize: 20))
                                   )
-                                ),
-                        ]);
-                    } else  {
-                      // By default, show a loading spinner.
-                      return Center(child: CircularProgressIndicator(backgroundColor: Colors.yellow));
-                    }
-                  }
-                )
+                              )
+                            ],
+                          )
+                        ),
+                        Divider(height: 10), //  
+                      ]
+                    )
+                  );
+                }
+              },
+            )
           )
         ]
       )
@@ -138,7 +179,7 @@ BoxDecoration myBoxDecoration() {
   return BoxDecoration(
     color: Color.fromRGBO(50, 50, 50, 1),
     border: Border.all(
-      width: 3.0,
+      width: 3.0
     ),
     borderRadius: BorderRadius.all(
         Radius.circular(5.0) //         <--- border radius here

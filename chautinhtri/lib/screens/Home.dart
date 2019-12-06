@@ -116,7 +116,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                               RaisedButton(
                                 color: Colors.yellow,
                                 onPressed: () {
-                                  Navigator.pushNamed(context, '/listfilms');
+                                  Navigator.pushNamed(context, '/listFilms');
                                 },
                                 child: Text('Xem Phim', style: TextStyle(color: Colors.red),),
                               )

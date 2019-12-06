@@ -55,7 +55,6 @@ class YoutubePlayerController extends ValueNotifier<YoutubePlayerValue> {
 
   /// Forces to enter fullScreen.
   void enterFullScreen([bool autoRotationEnabled = false]) {
-    Ads.isFullScreen = true;
     Ads.hideBannerAd();
 
     pause();
@@ -75,7 +74,6 @@ class YoutubePlayerController extends ValueNotifier<YoutubePlayerValue> {
 
   /// Forces to exit fullScreen.
   void exitFullScreen() {
-    Ads.isFullScreen = false;
     Ads.showBannerAd();
     pause();
     value = value.copyWith(isFullScreen: false);

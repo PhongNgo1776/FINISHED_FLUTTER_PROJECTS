@@ -26,12 +26,14 @@ class MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
     ..addListener(() {
         final bool isPlaying = _videoPlayerController.value.isPlaying;
         if(isPlaying){
+          if(isFirstTime){
+            Ads.hideInterstitialAd();
+          } else {
+            Ads.showInterstitialAd();
+          }
+
           isFirstTime = false;
-          // new Timer(const Duration(milliseconds: 5000), () {
-          //   setState(() {
-          //     myInterstitial.dispose();
-          //   });
-          // });
+          
         } else {
           Ads.hideInterstitialAd();
           if(!isFirstTime){
@@ -65,10 +67,10 @@ class MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
               SliverList(
                 delegate: SliverChildListDelegate(
                     [Container(
-                      height: 300, 
+                      height: 270, 
                       color: Colors.black,
                       child: Container(
-                              margin: EdgeInsets.only(top: 60),
+                              margin: EdgeInsets.only(top: 35),
                               color: Colors.black,
                               child: ChewieListItem(
                               videoPlayerController: _videoPlayerController,

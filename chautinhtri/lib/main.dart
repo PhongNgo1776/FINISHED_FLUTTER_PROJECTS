@@ -1,8 +1,9 @@
 import 'package:swcttfilm/screens/About.dart';
-import 'package:swcttfilm/screens/Detail.dart';
+import 'package:swcttfilm/screens/FbDetail.dart';
 import 'package:swcttfilm/screens/Home.dart';
 import 'package:swcttfilm/screens/ListFilms.dart';
 import 'package:flutter/material.dart';
+import 'package:swcttfilm/screens/YtDetail.dart';
 
 
 void main() {
@@ -10,8 +11,9 @@ void main() {
     initialRoute: '/',
     routes: <String, WidgetBuilder>{
       '/': (context) => Home(),
-      '/listfilms': (context) => ListFilms(),
-      '/detail': (context) => Detail(),
+      '/listFilms': (context) => ListFilms(),
+      '/ytDetail': (context) => YtDetail(),
+      '/fbDetail': (context) => FbDetail(),
       '/about': (context) => About(),
     },
   ));
