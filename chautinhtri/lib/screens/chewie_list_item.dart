@@ -1,7 +1,7 @@
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:swcttfilm/models/Ads.dart';
 import 'package:video_player/video_player.dart';
-import 'package:speechless/ads.dart';
 
 class ChewieListItem extends StatefulWidget {
   // This will contain the URL/asset path which we want to play
@@ -24,7 +24,6 @@ class _ChewieListItemState extends State<ChewieListItem> {
   @override
   void initState() {
     super.initState();
-    Ads.showBannerAd();
     // Wrapper on top of the videoPlayerController
     _chewieController = ChewieController(
       videoPlayerController: widget.videoPlayerController,
@@ -56,7 +55,7 @@ class _ChewieListItemState extends State<ChewieListItem> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(3),
       child: Chewie(
         controller: _chewieController,
       ),

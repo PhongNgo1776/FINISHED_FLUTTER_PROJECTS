@@ -1,10 +1,10 @@
 import 'package:firebase_admob/firebase_admob.dart';
 
-const String APP_ID = "ca-app-pub-6420987903580707~1996998793";
+const String APP_ID = "ca-app-pub-6420987903580707~2506476120";
 
-const String BANNER_ID = "ca-app-pub-6420987903580707/4519220357";
-const String INTERSTITIAL_ID = "ca-app-pub-6420987903580707/3118508779";
-const String REWARDED_VIDEO_ID = "ca-app-pub-6420987903580707/8069289417";
+const String BANNER_ID = "ca-app-pub-6420987903580707/8418591435";
+const String INTERSTITIAL_ID = "ca-app-pub-6420987903580707/3166264750";
+const String REWARDED_VIDEO_ID = "ca-app-pub-6420987903580707/1211891540";
 const String testDevice = 'YOUR_DEVICE_ID';
 
 class Ads {
@@ -17,6 +17,9 @@ class Ads {
 
   static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
     testDevices: testDevice != null ? <String>[testDevice] : null,
+    childDirected: true,
+    designedForFamilies: true,
+    gender: MobileAdGender.female
   );
 
   static BannerAd _createBannerAd() {

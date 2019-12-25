@@ -71,14 +71,14 @@ class MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
               SliverList(
                 delegate: SliverChildListDelegate(
                     [Container(
-                      height: 270, 
+                      height: 240, 
                       color: Colors.black,
                       child: Container(
-                                margin: EdgeInsets.only(top: 35),
+                                margin: EdgeInsets.only(top: 0),
                                 color: Colors.black,
                                 child: ChewieListItem(
                                 videoPlayerController: _videoPlayerController,
-                                looping: true,
+                                looping: false,
                               ),
                         )
                     )

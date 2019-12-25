@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.swhowfarillgo2">
+    package="com.swshowyourself">
 
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
@@ -11,7 +11,7 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="Show Yourself ft Evan Rachel Wood - Frozen 2"
         android:icon="@mipmap/ic_launcher">
-        <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-6420987903580707~1996998793"/>
+        <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-6420987903580707~2506476120"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

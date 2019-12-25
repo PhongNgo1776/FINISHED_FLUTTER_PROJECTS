@@ -74,7 +74,7 @@ class MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
                               color: Colors.black,
                               child: ChewieListItem(
                               videoPlayerController: _videoPlayerController,
-                              looping: true,
+                              looping: false,
                             ),
                       )
                     )]),

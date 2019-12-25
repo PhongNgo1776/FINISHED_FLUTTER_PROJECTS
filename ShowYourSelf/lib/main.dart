@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:swhowfarillgo2/ads.dart';
-import 'package:swhowfarillgo2/chewie_list_item.dart';
+import 'package:swshowyourself/ads.dart';
+import 'package:swshowyourself/chewie_list_item.dart';
 import 'package:video_player/video_player.dart';
 
 void main() => runApp(MaterialApp(
       home: MyApp(),
+      debugShowCheckedModeBanner: false,
     ));
 
 class MyApp extends StatefulWidget {
@@ -22,7 +23,7 @@ class MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    _videoPlayerController = VideoPlayerController.network('https://phongngo1776.github.io/Videos/HowFarIllGo/HowFarIllGo.mp4')
+    _videoPlayerController = VideoPlayerController.network('https://phongngo1776.github.io/Videos/ShowYourself/ShowYourself.mp4')
     ..addListener(() {
         final bool isPlaying = _videoPlayerController.value.isPlaying;
         if(isPlaying){
@@ -78,7 +79,7 @@ class MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
                                 color: Colors.black,
                                 child: ChewieListItem(
                                 videoPlayerController: _videoPlayerController,
-                                looping: true,
+                                looping: false,
                               ),
                         )
                     )

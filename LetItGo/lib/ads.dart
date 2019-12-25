@@ -17,6 +17,8 @@ class Ads {
 
   static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
     testDevices: testDevice != null ? <String>[testDevice] : null,
+    childDirected: true,
+    gender: MobileAdGender.female
   );
 
   static BannerAd _createBannerAd() {

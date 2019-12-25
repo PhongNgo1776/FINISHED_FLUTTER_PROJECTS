@@ -1,4 +1,4 @@
-package com.swhowfarillgo2;
+package com.swshowyourself;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

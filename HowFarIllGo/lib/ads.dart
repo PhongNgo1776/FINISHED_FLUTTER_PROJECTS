@@ -17,6 +17,8 @@ class Ads {
 
   static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
     testDevices: testDevice != null ? <String>[testDevice] : null,
+    designedForFamilies: true,
+    childDirected: true
   );
 
   static BannerAd _createBannerAd() {
@@ -35,35 +37,35 @@ class Ads {
   }
 
   static void showBannerAd() {
-    if (_bannerAd == null) _bannerAd = _createBannerAd();
-    _bannerAd
-      ..load()
-      ..show(anchorOffset: 85.0, anchorType: AnchorType.top, );
+    // if (_bannerAd == null) _bannerAd = _createBannerAd();
+    // _bannerAd
+    //   ..load()
+    //   ..show(anchorOffset: 85.0, anchorType: AnchorType.top, );
   }
 
   static void hideBannerAd() async {
-    await _bannerAd.dispose();
-    _bannerAd = null;
+    // await _bannerAd.dispose();
+    // _bannerAd = null;
   }
 
   static void showInterstitialAd() {
-    if (_interstitialAd == null) _interstitialAd = _createInterstitial();
-    _interstitialAd
-      ..load()
-      ..show();
+    // if (_interstitialAd == null) _interstitialAd = _createInterstitial();
+    // _interstitialAd
+    //   ..load()
+    //   ..show();
   }
 
   static void hideInterstitialAd() async {
-    await _interstitialAd.dispose();
-    _interstitialAd = null;
+    // await _interstitialAd.dispose();
+    // _interstitialAd = null;
   }
 
   static void showRewaredVideoAd(){
-    RewardedVideoAd.instance.load(adUnitId: REWARDED_VIDEO_ID, targetingInfo: targetingInfo);
-      RewardedVideoAd.instance.listener = (RewardedVideoAdEvent event, {String rewardType, int rewardAmount}) {
-        if (event == RewardedVideoAdEvent.loaded) {
-          RewardedVideoAd.instance.show();
-        }
-      };
+    // RewardedVideoAd.instance.load(adUnitId: REWARDED_VIDEO_ID, targetingInfo: targetingInfo);
+    //   RewardedVideoAd.instance.listener = (RewardedVideoAdEvent event, {String rewardType, int rewardAmount}) {
+    //     if (event == RewardedVideoAdEvent.loaded) {
+    //       RewardedVideoAd.instance.show();
+    //     }
+    //   };
   }
 }
